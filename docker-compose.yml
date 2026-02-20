@@ -1,0 +1,34 @@
+version: "3.9"
+
+# Deploy this file to /opt/tauri-code/ on the VPS
+# Usage: docker compose up -d
+
+services:
+  tauri-code:
+    image: registry.gitlab.com/owlstar/tauri-code:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - PORT=3000
+      - DEFAULT_PROJECT_PATH=/workspace
+      - QDRANT_URL=http://qdrant:6333
+      # Set your Anthropic API key (VPS has no LM Studio):
+      # - CLAUDE_API_KEY=sk-ant-...
+    volumes:
+      - tauri-code-config:/root/.tauri-code
+      - /opt/tauri-code/workspace:/workspace
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+    volumes:
+      - qdrant-data:/qdrant/storage
+
+volumes:
+  tauri-code-config:
+  qdrant-data:

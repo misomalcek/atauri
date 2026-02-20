@@ -1,0 +1,14 @@
+[package]
+name = "tauri-code-web"
+version = "0.1.0"
+edition = "2021"
+description = "Tauri Code web backend - Axum server for tauricode.com"
+
+[dependencies]
+tc-core = { path = "../shared" }
+axum = { version = "0.8", features = ["ws"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs", "cors"] }

@@ -1,0 +1,22 @@
+[package]
+name = "tauri-code"
+version = "0.1.0"
+edition = "2021"
+description = "AI-first development interface - context weaving meets code"
+
+[dependencies]
+tc-core = { path = "../shared" }
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-shell = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[lib]
+name = "tauri_code_lib"
+crate-type = ["lib", "cdylib", "staticlib"]

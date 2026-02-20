@@ -1,0 +1,26 @@
+# VPS systemd service for Tauri Code Web
+# Place at: /etc/systemd/system/tauri-code.service
+# Enable: systemctl enable tauri-code && systemctl start tauri-code
+# After deploy: systemctl restart tauri-code
+
+[Unit]
+Description=Tauri Code Web Server
+After=network.target
+
+[Service]
+Type=simple
+User=m
+WorkingDirectory=/opt/tauri-code
+ExecStart=/opt/tauri-code/tauri-code-web
+Restart=on-failure
+RestartSec=5
+
+# Environment — override with actual values on VPS
+Environment=PORT=3000
+Environment=DEFAULT_PROJECT_PATH=/opt/tauri-code/workspace
+Environment=QDRANT_URL=http://localhost:6333
+# Uncomment and set your Anthropic API key (LM Studio is not on VPS):
+# Environment=CLAUDE_API_KEY=sk-ant-...
+
+[Install]
+WantedBy=multi-user.target

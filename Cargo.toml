@@ -1,0 +1,11 @@
+[workspace]
+members = ["shared", "src-tauri", "src-axum"]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json", "stream"] }
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"

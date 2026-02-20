@@ -1,0 +1,18 @@
+node_modules/
+dist/
+# Cargo build artifacts (workspace-level — includes shared/ and src-axum/ targets)
+target/
+src-tauri/target/
+# App config (may contain API keys)
+.tauri-code/
+*.env
+.env*
+# macOS bundles and disk images
+*.dmg
+*.app
+# Build artifacts
+*.deb
+*.rpm
+*.AppImage
+# macOS
+.DS_Store
