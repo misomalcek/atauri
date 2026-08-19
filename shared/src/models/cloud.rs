@@ -21,12 +21,17 @@ impl ClaudeModel {
 
     /// Default Claude Sonnet - good balance of speed and capability
     pub fn sonnet(api_key: &str) -> Self {
-        Self::new("claude-sonnet-4-5-20250929", "Claude Sonnet 4.5", api_key)
+        Self::new("claude-sonnet-4-6", "Claude Sonnet 4.6", api_key)
     }
 
     /// Claude Opus - maximum reasoning
     pub fn opus(api_key: &str) -> Self {
         Self::new("claude-opus-4-6", "Claude Opus 4.6", api_key)
+    }
+
+    /// Claude Haiku - fast, lightweight tasks
+    pub fn haiku(api_key: &str) -> Self {
+        Self::new("claude-haiku-4-5-20251001", "Claude Haiku 4.5", api_key)
     }
 }
 

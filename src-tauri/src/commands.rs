@@ -150,7 +150,12 @@ pub async fn open_project(path: String, state: State<'_, AppState>) -> Result<Pr
     }
 
     if let Some(ref api_key) = config.claude_api_key {
-        models.push(Arc::new(cloud::ClaudeModel::sonnet(api_key)));
+        let key = api_key.trim();
+        if !key.is_empty() {
+            models.push(Arc::new(cloud::ClaudeModel::haiku(key)));
+            models.push(Arc::new(cloud::ClaudeModel::sonnet(key)));
+            models.push(Arc::new(cloud::ClaudeModel::opus(key)));
+        }
     }
 
     let router = Router::new_with_config(models, config.to_routing_config());
@@ -384,10 +389,21 @@ pub async fn list_models(state: State<'_, AppState>) -> Result<Vec<ModelInfo>, S
     let config = state.config.lock().await;
     let mut models = local::LmStudioModel::discover(config.lm_studio_port).await;
 
-    if config.claude_api_key.is_some() {
+    let has_claude_key = config.claude_api_key
+        .as_deref()
+        .map(|k| !k.is_empty())
+        .unwrap_or(false);
+
+    if has_claude_key {
         models.push(ModelInfo {
-            id: "claude-sonnet-4-5".into(),
-            name: "Claude Sonnet 4.5".into(),
+            id: "claude-haiku-4-5-20251001".into(),
+            name: "Claude Haiku 4.5".into(),
+            tier: ModelTier::Cloud,
+            available: true,
+        });
+        models.push(ModelInfo {
+            id: "claude-sonnet-4-6".into(),
+            name: "Claude Sonnet 4.6".into(),
             tier: ModelTier::Cloud,
             available: true,
         });
@@ -458,8 +474,11 @@ pub async fn save_settings(settings: AppConfig, state: State<'_, AppState>) -> R
         )));
     }
     if let Some(ref api_key) = settings.claude_api_key {
-        if !api_key.is_empty() {
-            models.push(Arc::new(cloud::ClaudeModel::sonnet(api_key)));
+        let key = api_key.trim();
+        if !key.is_empty() {
+            models.push(Arc::new(cloud::ClaudeModel::haiku(key)));
+            models.push(Arc::new(cloud::ClaudeModel::sonnet(key)));
+            models.push(Arc::new(cloud::ClaudeModel::opus(key)));
         }
     }
     if !models.is_empty() {

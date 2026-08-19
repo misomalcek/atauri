@@ -7,7 +7,9 @@
  * invoke() signature is identical to @tauri-apps/api/core.
  */
 
-const isTauri = typeof window !== 'undefined' && !!window.__TAURI__;
+// Tauri v2 uses __TAURI_INTERNALS__, v1 used __TAURI__
+const isTauri = typeof window !== 'undefined' &&
+  !!(window.__TAURI_INTERNALS__ ?? window.__TAURI__);
 
 // ──────────────────────────────────────
 // Arg normalizers
